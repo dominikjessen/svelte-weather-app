@@ -3,6 +3,8 @@
 	import DailyForecast from '$lib/components/dailyForecast.svelte';
 	import Search from '$lib/components/search.svelte';
 	import type { WeatherForecast } from '$lib/types/weather';
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	const DUMMY_FORECAST = {
 		latitude: 52.38,
@@ -58,6 +60,24 @@
 
 	let location = '';
 	let forecast: WeatherForecast;
+
+	onMount(async () => {
+		const latLong = $page.url.searchParams.get('location')?.split(',') ?? null;
+		if (latLong) {
+			const timezone = 'timezone=auto';
+			const forecast_days = 'forecast_days=10';
+			const current =
+				'current=weather_code,temperature_2m,precipitation,apparent_temperature,wind_speed_10m,relative_humidity_2m';
+			const daily = 'daily=weather_code,temperature_2m_max,temperature_2m_min';
+
+			const res = await fetch(
+				`https://api.open-meteo.com/v1/forecast?latitude=${latLong[0]}&longitude=${latLong[1]}&${timezone}&${current}&${daily}&${forecast_days}`
+			);
+			if (res.ok) {
+				forecast = await res.json();
+			}
+		}
+	});
 </script>
 
 <div class="flex flex-col gap-4 lg:gap-8 items-center justify-center w-11/12 md:w-4/5 mx-auto py-4">
