@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import type { SearchResult } from '$lib/types/weather';
 	import { SearchIcon } from 'lucide-svelte';
 
@@ -16,7 +18,34 @@
 	}
 
 	function geoLocateUser() {
-		location = 'Your Location';
+		function success(position: GeolocationPosition) {
+			const newUrl = new URL($page.url);
+			newUrl?.searchParams?.set(
+				'location',
+				`${position.coords.latitude},${position.coords.longitude}`
+			);
+			console.log(newUrl);
+
+			goto(newUrl);
+
+			// Notify parent for title change
+			location = 'Your Location';
+
+			// Reset state
+			searchOptionsOpen = false;
+			searchResults = [];
+			searchValue = '';
+		}
+
+		function error() {
+			alert('Could not locate user');
+		}
+
+		if (!navigator.geolocation) {
+			alert('Geolocation not supported by your browser');
+		} else {
+			navigator.geolocation.getCurrentPosition(success, error);
+		}
 	}
 </script>
 
