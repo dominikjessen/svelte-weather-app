@@ -40,7 +40,19 @@
 	}
 
 	function handleOptionSelected(option: SearchResult) {
+		// Set search params
+		const newUrl = new URL($page.url);
+		newUrl?.searchParams?.set('location', `${option.latitude},${option.longitude}`);
+
+		goto(newUrl);
+
+		// Notify parent for title change
 		location = `${option.name}, ${option.country_code.toUpperCase()}`;
+
+		// Reset search state
+		searchOptionsOpen = false;
+		searchResults = [];
+		searchValue = '';
 	}
 
 	function geoLocateUser() {
