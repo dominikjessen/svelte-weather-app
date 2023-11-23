@@ -35,27 +35,26 @@ export type CurrentForecast = {
 };
 
 export type DailyUnits = {
-	time?: 'iso8601';
-	interval?: 'seconds';
-	weather_code?: 'wmo code';
-	temperature_2m_max?: '°C';
-	temperature_2m_min?: '°C';
+	time: 'iso8601';
+	weather_code: 'wmo code';
+	temperature_2m_max: '°C';
+	temperature_2m_min: '°C';
 };
 
 export type DailyForecast = {
-	time?: string[];
-	weather_code?: number[];
-	temperature_2m_max?: number[];
-	temperature_2m_min?: number[];
+	time: string[];
+	weather_code: number[];
+	temperature_2m_max: number[];
+	temperature_2m_min: number[];
 };
 
 export type SingleDayForecast = {
-	time?: string;
-	interval?: number;
-	weather_code?: number;
-	temperature_2m?: number;
-	temperature_2m_max?: number;
-	temperature_2m_min?: number;
+	time: string;
+	interval: number;
+	weather_code: number;
+	temperature_2m: number;
+	temperature_2m_max: number;
+	temperature_2m_min: number;
 };
 
 export type SearchResult = {

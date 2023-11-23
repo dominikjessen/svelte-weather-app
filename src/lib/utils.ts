@@ -26,5 +26,5 @@ export const arrayTransformDailyForecastData = (
 		transformedArray.push(obj);
 	}
 
-	return transformedArray;
+	return transformedArray as SingleDayForecast[];
 };
