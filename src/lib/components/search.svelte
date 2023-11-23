@@ -3,15 +3,41 @@
 	import { page } from '$app/stores';
 	import type { SearchResult } from '$lib/types/weather';
 	import { SearchIcon } from 'lucide-svelte';
+	import type { FocusEventHandler } from 'svelte/elements';
 
 	export let location: string;
 
 	let searchValue = '';
 	let searchOptionsOpen = false;
-
+	let timeout: number;
 	let searchResults: SearchResult[] = [];
 
-	function searchBlurred() {}
+	function searchBlurred(e: FocusEvent) {
+		// If a list option is chosen, don't do anything as handleSelected will sort out click
+		if (e.relatedTarget) return;
+		searchOptionsOpen = false;
+	}
+
+	async function search() {
+		const res = await fetch(
+			`https://geocoding-api.open-meteo.com/v1/search?name=${searchValue}&count=10&language=en&format=json`
+		);
+		const data = await res.json();
+		searchResults = data.results as SearchResult[];
+	}
+
+	function handleSearch() {
+		if (!searchValue) {
+			searchResults = [];
+			return;
+		}
+
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+
+		timeout = setTimeout(search, 500);
+	}
 
 	function handleOptionSelected(option: SearchResult) {
 		location = `${option.name}, ${option.country_code.toUpperCase()}`;
@@ -24,7 +50,6 @@
 				'location',
 				`${position.coords.latitude},${position.coords.longitude}`
 			);
-			console.log(newUrl);
 
 			goto(newUrl);
 
@@ -57,6 +82,7 @@
 			<input
 				placeholder="Search for a location"
 				bind:value={searchValue}
+				on:input={handleSearch}
 				on:blur={searchBlurred}
 				on:focus={() => (searchOptionsOpen = true)}
 				class="pl-12 pr-2 py-5 bg-white grow rounded-xl text-lg"
