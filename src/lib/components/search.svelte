@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import type { SearchResult } from '$lib/types/weather';
 	import { SearchIcon } from 'lucide-svelte';
-	import type { FocusEventHandler } from 'svelte/elements';
 
 	export let location: string;
 
