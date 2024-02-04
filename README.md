@@ -6,8 +6,9 @@ A very simple app to get the weather using openmeteo's API built with Sveltekit 
 
 ## Other implementations
 
-- [React (Remix)](https://github.com/dominikjessen/remix-weather-app)
 - [Vue (Nuxt)](https://github.com/dominikjessen/nuxt-weather-app)
+- [React (Remix)](https://github.com/dominikjessen/remix-weather-app)
+- [React (Next)](https://github.com/dominikjessen/next-weather-app)
 
 ## About this app
 

@@ -5,6 +5,7 @@
 	import { SearchIcon } from 'lucide-svelte';
 
 	export let location: string;
+	export let isLoading = false;
 
 	let searchValue = '';
 	let searchOptionsOpen = false;
@@ -47,6 +48,7 @@
 
 		// Notify parent for title change
 		location = `${option.name}, ${option.country_code.toUpperCase()}`;
+		isLoading = false;
 
 		// Reset search state
 		searchOptionsOpen = false;
@@ -66,6 +68,7 @@
 
 			// Notify parent for title change
 			location = 'Your Location';
+			isLoading = false;
 
 			// Reset state
 			searchOptionsOpen = false;
@@ -80,6 +83,7 @@
 		if (!navigator.geolocation) {
 			alert('Geolocation not supported by your browser');
 		} else {
+			isLoading = true;
 			navigator.geolocation.getCurrentPosition(success, error);
 		}
 	}
